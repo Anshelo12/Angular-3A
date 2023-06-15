@@ -1,1 +1,27 @@
-<p>product works!</p>
+<div class="table-responsive">
+    <table class="table table-primary">
+        <thead>
+            <tr>
+                <th scope="col">Producto</th>
+                <th scope="col">Precio</th>
+                <th scope="col">Descrpcion</th>
+                <th scope="col">Category</th>
+                <th scope="col">Imagen</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let product of products">
+                <td>{{product.title}}</td>
+                <td>{{product.price}}</td>
+                <td>{{product.description}}</td>
+                <td>{{product.category}}</td>
+                <td><img src="{{product.images}}" alt="" width="160px" height="160px"></td>
+            </tr>
+            <tr class="">
+                <td scope="row">Item</td>
+                <td>Item</td>
+                <td>Item</td>
+            </tr>
+        </tbody>
+    </table>
+</div>

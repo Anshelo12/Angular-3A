@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http'
+import { CreateProductModel, ProductModel, UpdateProductModel} from 'src/app/models/product.model';
+import { ProductService } from './product.service';
 
 @Component({
   selector: 'app-product',
@@ -7,66 +9,55 @@ import { HttpClient } from '@angular/common/http'
   styleUrls: ['./product.component.css']
 })
 export class ProductComponent {
-  //inyeccion de dependencias = alogo similar a instanciar un objeto
-  constructor(private httpClient:HttpClient){
-    
+  products:ProductModel[] = [];
+
+  selectedProduct: UpdateProductModel = {title:'', price:0, description:''};
+
+  constructor(private productService:ProductService){
+    this.editProduct()
+  }
+  editProduct() {
+    throw new Error('Method not implemented.');
   }
   ngOnInit(): void{
-    //this.getProducts();
+    this.getProducts();
     //this.getProduct();
-    this.createProduct();
+    //this.createProduct();
     // this.updateProsuct();
+    //this.deleteProduct();
   }
 
   getProducts(){
-     //objeto . metodo = this.httpClient.get
-     const response = this.httpClient.get('http://api.escuelajs.co/api/v1/products').subscribe(
-      response=>{
+      this.productService.getAll().subscribe((response: any)=>{
       console.log(response);
       }
-      ); // haciendo una peticion al backend 
-      console.log(response);
-  };
+    );
+  }
 
-  getProduct(){
-    //objeto . metodo = this.httpClient.get
-    const url = 'http://api.escuelajs.co/api/v1/products/2';
-    const response = this.httpClient.get(url).subscribe(
-    response=>{
+  getProduct(id:number){
+    this.productService.getOne(id).subscribe(
+      (    response: any)=>{
     console.log(response);
     }
     );
   };
 
-  createProduct(){
-    const data = {
-      title: "Zapatos",
-      price: 40,
-      description: "Zapatos deportivos / Anshelo Proaño",
-      categoryId: 1,
-      images: ["https://picsum.photos/640/640?r=4213","https://picsum.photos/640/640?r=7623","https://picsum.photos/640/640?r=9048"]
-    }
-    const url = 'https://api.escuelajs.co/api/v1/products';
-    this.httpClient.post(url, data).subscribe(
-      response=>{
+  createProduct(product:CreateProductModel){
+    this.productService.store(product).subscribe(
+      (      response: any)=>{
         console.log(response);
     }
     );
   } 
 
-  // updateProduct(){
-  //   const data= {
-  //     title: "Zapatos",
-  //     price: 40,
-  //     description: "Zapatos deportivos / Anshelo Proaño",
-  //   }
-  //   const url = 'https://api.escuelajs.co/api/v1/products';
-  //   const response = this.httpClient.post(url, data).subscribe(
-  //   response=>{
-  //   console.log(response);
-  //   }
-  //   );
-  // } 
+  updateProduct(id:number, product:UpdateProductModel){
+     const url = 'https://api.escuelajs.co/api/v1/products';
+     this.productService.update(id, product).subscribe(
+       (     response: any)=>{
+     console.log(response);
+     }
+     );
+   } 
 
   // deleteProduct(){
   //   const url = 'https://api.escuelajs.co/api/v1/products';
